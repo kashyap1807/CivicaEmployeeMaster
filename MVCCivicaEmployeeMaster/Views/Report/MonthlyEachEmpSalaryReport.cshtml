@@ -1,0 +1,223 @@
+﻿
+@using MVCCivicaEmployeeMaster.ViewModel
+@using System.Globalization
+@model SalaryHeadTotal
+
+@{
+    ViewData["Title"] = "Monthly Salary Report";
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <partial name="_EachEmployeeView" />
+        <h1 class="card-title">Monthly Salary Report</h1>
+        <div class="card mb-3" style="background-color:white">
+            <div class="card-body" style="background-color:white">
+                @using (Html.BeginForm("MonthlyEachEmpSalaryReport", "Report", FormMethod.Post, new { id = "monthlyReportForm" }))
+                {
+                    @Html.Hidden("id", null, new { id = "id" }) <!-- Hidden input field for Employee ID -->
+
+                    <div class="form-group" style="background-color:white">
+                        <label style="font-weight: bold;">Select Year:</label>
+                        @{
+                            var currentYear = DateTime.Now.Year;
+                            var yearList = Enumerable.Range(2001, currentYear - 2000).Reverse()
+                            .Select(x => new SelectListItem
+                {
+                    Text = x.ToString(),
+                    Value = x.ToString()
+                });
+                            var selectListYear = new SelectList(yearList, "Value", "Text", null);
+                        }
+                        @Html.DropDownList("year", selectListYear, "Select Year", new { @class = "form-control", onchange = "showMonthDropdown()" })
+                    </div>
+
+                    <div class="form-group" id="monthDropdown" style="display: none;">
+                        @Html.Label("Select Month:")
+                        @{
+                            var monthList = Enumerable.Range(1, 12)
+                            .Select(x => new SelectListItem
+                {
+                    Text = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(x),
+                    Value = x.ToString()
+                });
+                            var selectListMonth = new SelectList(monthList, "Value", "Text", null);
+                        }
+                        @Html.DropDownList("month", selectListMonth, "Select Month", new { @class = "form-control", onchange = "checkMonthForError()" })
+                        <div id="monthErrorMessage" style="display: none; color: red;">Please select a month.</div>
+                        
+                    </div>
+                }
+
+                @* Error message for Year selection *@
+                @* <div id="yearErrorMessage" @* class="alert alert-danger"  style="display: none;">*Please select a year.</div> *@
+            <div id="yearErrorMessage" style="display: none; color: red;">*Please select a year.</div>
+                
+            </div>
+        </div>
+
+        @if (Model != null && Model.TotalSalary != 0)
+        {
+            <div class="card mb-3" >
+                <div class="card-body" id="salarySlipTable">
+                    <table class="table table-striped">
+                        <thead>
+                        <th scope="col" class="text-uppercase">Sr No.</th>
+                        <th scope="col" class="text-uppercase">Salary Head</th>
+                        <th scope="col" colspan="2" class="text-uppercase text-end">Amount</th>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Basic Salary</td>
+
+                                <td class="text-end" colspan="2">@Model.BasicSalary</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>HRA</td>
+                                <td class="text-end" colspan="2">@Model.HRA</td>
+
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Allowance</td>
+                                <td class="text-end" colspan="2">@Model.Allowance</td>
+
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>Gross Salary</td>
+                                <td class="text-end" colspan="2">@Model.GrossSalary</td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="3" class="text-end">PF Deduction</td>
+                                <td class="text-end">@Model.PfDeduction</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-end">Prof Tax</td>
+                                <td class="text-end">@Model.ProfTax</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-end">Gross Deductions</td>
+                                <td class="text-end">@Model.GrossDeductions</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="3" class="text-uppercase text-end">Total Salary</th>
+                                <td class="text-end">@Model.TotalSalary</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary mb-3" onclick="downloadSalarySlip()">Download Salary Slip</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3 text-start">
+                    <a class="btn btn-secondary btn-block " asp-action="EachEmployeeGrid" asp-controller="Report">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script type="text/javascript">
+        function checkMonthForError() {
+            let selectedMonth = $('#month').val();
+            if (selectedMonth !== '') {
+                $('#monthErrorMessage').hide();
+                $('#monthlyReportForm').submit();
+
+            }
+            else {
+                $('#monthErrorMessage').show();
+            }
+
+        };
+
+        function downloadSalarySlip() {
+            const element = document.getElementById('salarySlipTable');
+
+
+            html2canvas(element, {
+                onrendered: function (canvas) {
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF();
+                    const imgProps = pdf.getImageProperties(imgData);
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = imgProps.height * pdfWidth / imgProps.width;
+                    pdf.addImage(imgData, 'PNG', 0, 10, pdfWidth - 20, pdfHeight);
+                    pdf.save('EmpMonthalysalary_slip.pdf');
+                }
+            });
+        }
+        $(document).ready(function () {
+            // Function to show month dropdown if year is selected
+            function showMonthDropdown() {
+                let selectedYear = $('#year').val();
+                let selectedMonth = $('#month').val();
+                if (selectedYear !== '') {
+                    $('#monthDropdown').show();
+                    $('#monthErrorMessage').show();
+                    $('#yearErrorMessage').hide(); // Hide year error message
+                } else {
+                    $('#monthDropdown').hide(); // Hide month dropdown if no year is selected
+                    $('#yearErrorMessage').show(); // Show year error message
+                }
+                if (selectedMonth !== '') {
+                    $('#monthErrorMessage').hide();
+                    
+                }
+                
+            }
+
+            
+            
+
+            // Initial check on page load
+            showMonthDropdown();
+
+            // Handle form submission
+            $('#monthlyReportForm').submit(function () {
+                var selectedYear = $('#year').val();
+                if (selectedYear === '') {
+                    $('#yearErrorMessage').show(); // Show year error message
+                    return false; // Prevent form submission
+                }
+
+                // Optionally, you can submit the selected month along with the form
+                var selectedMonth = $('#month').val();
+                if (selectedMonth !== '') {
+                    $('<input />').attr('type', 'hidden')
+                        .attr('name', "month")
+                        .attr('value', selectedMonth)
+                        .appendTo('#monthlyReportForm');
+                }
+
+                // Ensure the month dropdown is visible after submission if a year is selected
+                showMonthDropdown();
+            });
+
+            // Handle change in year dropdown
+            $('#year').change(function () {
+                showMonthDropdown();
+            });
+        });
+    </script>
+}
+
+
+        

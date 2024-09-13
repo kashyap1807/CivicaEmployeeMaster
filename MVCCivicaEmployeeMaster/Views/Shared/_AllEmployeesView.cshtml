@@ -1,0 +1,99 @@
+﻿@* <div id="allEmployeesContent">
+    <!-- Content specific to _AllEmployees view -->
+    <h3>All Employees</h3>
+    <!-- Example buttons to load salary reports -->
+
+    <a id="MonthlysalarySlipLink" class="btn btn-primary" asp-controller="Report" asp-action="MonthlySalaryReport">Monthly Salary slip</a>
+    <a class="btn btn-primary" asp-controller="Report" asp-action="YearlySalaryReport">Yearly Salary Slip</a>
+    <a class="btn btn-primary" asp-controller="Report" asp-action="MonthalyProfTaxReport">Professional Tax Deduction Report</a>
+</div>
+
+<!-- Container to load dynamic content -->
+<div id="allEmployeesDynamicContent"></div>
+
+<script>
+    $(document).ready(function () {
+        initialLoad();
+    });
+
+    function initialLoad() {
+        document.getElementById('MonthlysalarySlipLink').click();
+    };
+</script>
+ *@
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div id="allEmployeesContent" class="card-header btn-light d-flex justify-content-between">
+        <!-- Content specific to _AllEmployees view -->
+        <h3>All Employees</h3>
+        <!-- Example buttons to load salary reports -->
+
+        <a id="MonthlysalarySlipLink" class="btn btn-primary" asp-controller="Report" asp-action="MonthlySalaryReport">Monthly Salary slip</a>
+        <a class="btn btn-primary" asp-controller="Report" asp-action="YearlySalaryReport">Yearly Salary Slip</a>
+        <a class="btn btn-primary" asp-controller="Report" asp-action="MonthalyProfTaxReport">Professional Tax Deduction Report</a>
+    </div>
+
+    <!-- Container to load dynamic content -->
+    <div id="allEmployeesDynamicContent"></div>
+
+    <style>
+        /* Ensure the body and HTML have no padding or margin */
+        /* html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+        */
+        /* .container {
+                display: flex;
+                flex-direction: column; /* Layout columns vertically */
+        align-items: center; /* Center items horizontally */
+        gap: 20px; /* Spacing between elements */
+        padding: 20px;
+        box-sizing: border-box; /* Ensure padding does not affect width */
+        }
+
+        */
+
+        #allEmployeesContent {
+            display: flex;
+            padding: 10px;
+            border-bottom: solid 0.2px lightgray;
+            align-items: center; /* Align items vertically */
+            gap: 10px; /* Spacing between heading and buttons */
+        }
+
+        .button-group {
+            display: flex; /* Display buttons in a row */
+            gap: 10px; /* Adjust spacing between buttons */
+        }
+
+            .button-group a {
+                padding: 10px 20px;
+                border: none;
+                background-color: #007bff;
+                color: #fff;
+                border-radius: 5px;
+                text-decoration: none; /* Remove underline from links */
+                cursor: pointer;
+            }
+    </style>
+
+
+
+    <script>
+        $(document).ready(function () {
+            initialLoad();
+        });
+
+        function initialLoad() {
+            document.getElementById('MonthlysalarySlipLink').click();
+        };
+    </script>
+    
+}
+
+

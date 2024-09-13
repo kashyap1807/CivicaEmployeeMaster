@@ -1,0 +1,79 @@
+<div class="container">
+  <h2 class="custom-heading  text-center my-4">Monthly Prof. Deduction Report {{ selectedMonth }} {{ selectedYear }}
+ </h2>
+ <div class="form-group rounded-corner">
+  <label for="year"><b>Select Year:</b></label>
+  <select class="form-control" id="year" [(ngModel)]="selectedYear" (ngModelChange)="onYearChange()">
+    <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+  </select>
+  <div *ngIf="!selectedYear">
+    Please select a year to view monthly salary data.
+  </div>
+</div>
+
+  <div class="form-group rounded-corner" *ngIf="selectedYear">
+    <label for="month"><b>Select Month:</b></label>
+    <select class="form-control" id="month" [(ngModel)]="selectedMonth"(ngModelChange)="fetchMonthlyProfTax()">
+      <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+    </select>
+    <div *ngIf="!selectedMonth">
+      Please select a month to view monthly salary data.
+    </div>
+  </div>
+
+  <div class="rounded-corner salary-data" *ngIf="selectedYear && selectedMonth && salaryHeadTotals && salaryHeadTotals.length > 0; else noData">
+  
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Month</th>
+          <th>Total Salary</th>
+          <th>Gross Deductions</th>
+          <th>Allowance</th>
+          <th>PF Deduction</th>
+          <th>Basic Salary</th>
+          <th>Gross Salary</th>
+          <th>HRA</th>
+          <th>Prof Tax</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let total of salaryHeadTotals">
+          <td>{{ total.year }}</td>
+          <td>{{ total.month }}</td>
+          <td>{{ total.totalSalary }}</td>
+          <td>{{ total.grossDeductions }}</td>
+          <td>{{ total.allowance }}</td>
+          <td>{{ total.pfDeduction }}</td>
+          <td>{{ total.basicSalary }}</td>
+          <td>{{ total.grossSalary }}</td>
+          <td>{{ total.hra }}</td>
+          <td>{{ total.profTax }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <div class="row">
+      <div class="col-12 text-end">
+        <button type="submit" class="btn btn-primary mb-3">Download Salary Slip</button>
+      </div>
+    </div> -->
+  </div>
+
+
+<br>
+
+
+<button class="btn btn-secondary btn-block" [routerLink]="['/monthlyeachemployee']"
+routerLinkActive="router-link-active">
+<i class="fas fa-arrow-left"></i> Back to List
+</button>
+</div>
+
+<!-- No Data Template -->
+<ng-template #noData>
+<div class="rounded-corner no-data">
+  <p>No data available for the selected month and year.</p>
+</div>
+</ng-template>
+<br>

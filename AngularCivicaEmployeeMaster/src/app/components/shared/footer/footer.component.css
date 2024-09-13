@@ -1,0 +1,8 @@
+.container{
+    min-height: 80px;
+    text-align: center;
+    font-weight: bold;
+  }
+.footer{
+  background-color: #009CA6;
+}

@@ -1,0 +1,110 @@
+<div class="container">
+  <h3 class="custom-heading  text-center my-4">Yearly Salary Report{{employee.firstName}} {{selectedYear}}</h3>
+
+  <div class="form-group rounded-corner">
+    <label for="yearDropdown"><b>Select Year:</b></label>
+    <select id="yearDropdown" class="form-control" [(ngModel)]="selectedYear" (ngModelChange)="onYearSelected()">
+      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+    </select>
+    <div *ngIf="!selectedYear">
+      Please select a year to view yearly salary data.
+    </div>
+  </div>
+
+  
+
+<div class="rounded-corner salary-data" *ngIf=" yearlySalaryData.length !=0 && selectedYear else noData">
+
+  <div class="col-12">
+  </div>
+  <div class="row mb-3">
+    <div class="col-12 col-sm-6 col-md-8 center">
+
+      <address *ngIf="yearlySalaryData.length !=0">
+        <strong> Name: {{ employee1.firstName }} {{ employee1.lastName }}</strong><br>
+        Email: {{ employee1.employeeEmail }}<br>
+        Department: {{ employee1.employeeDepartment.departmentName }}
+      </address>
+
+    </div>
+  </div>
+
+  <div *ngFor="let salary of yearlySalaryData">
+    <div class="container" #salarySlip id="salarySlipTable">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col" class="text-uppercase">Sr No.</th>
+              <th scope="col" class="text-uppercase">Salary Head</th>
+
+              <th scope="col" colspan="2" class="text-uppercase text-end">Amount</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            <tr>
+              <th scope="row">1</th>
+              <td>Basic Salary</td>
+
+              <td class="text-end" colspan="2">{{ salary.basicSalary }}</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>HRA</td>
+              <td class="text-end" colspan="2">{{ salary.hra }}</td>
+
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Allowance</td>
+              <td class="text-end" colspan="2">{{ salary.allowance }}</td>
+
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <td>Gross Salary</td>
+              <td class="text-end" colspan="2">{{ salary.grossSalary }}</td>
+
+            </tr>
+
+            <tr>
+              <td colspan="3" class="text-end">PF Deduction</td>
+              <td class="text-end">{{ salary.pfDeduction }}</td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-end">Prof Tax</td>
+              <td class="text-end">{{ salary.profTax }}</td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-end">Gross Deductions</td>
+              <td class="text-end">{{ salary.grossDeductions }}</td>
+            </tr>
+            <tr>
+              <th scope="row" colspan="3" class="text-uppercase text-end">Total Salary</th>
+              <td class="text-end">{{ salary.totalSalary }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary mb-3" (click)="downloadInvoice()">Download Salary Slip</button>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+
+<button class="btn btn-secondary btn-block" [routerLink]="['/monthlyeachemployee']"
+  routerLinkActive="router-link-active">
+  <i class="fas fa-arrow-left"></i> Back to List
+</button>
+</div>
+<ng-template #noData>
+  <div class="rounded-corner no-data">
+    <p>No data available for the selected year.</p>
+  </div>
+</ng-template>

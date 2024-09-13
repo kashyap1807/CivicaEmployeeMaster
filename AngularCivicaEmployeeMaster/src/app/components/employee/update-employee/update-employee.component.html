@@ -1,0 +1,139 @@
+<div class="container">
+    <div *ngIf="loading" class="loader-overlay">
+        <img src="assets/loaderImage.gif" class="loader-overlay" alt="loading" />
+    </div>
+    <h2 class="custom-heading">Update Employee</h2>
+    <br>
+    <div class="row justify-content-center">
+        <div class="col-md-6 mb-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form #updateEmployeeTfForm="ngForm" class="need-validation" (ngSubmit)="onSubmit(updateEmployeeTfForm)" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label" for="department"><i class="fas fa-building"></i> Department</label>
+                            <select id="department" name="department" class="form-select" [(ngModel)]="employee.departmentId" required>
+                                <!-- <option value="" disabled>-- Select your Department --</option> -->
+                                <option *ngFor="let d of departments" [value]="d.departmentId">{{d.departmentName}}</option>
+                            </select>
+                            <div *ngIf="updateEmployeeTfForm.controls['department']?.invalid && updateEmployeeTfForm.controls['department']?.touched">
+                                <small class="text-danger">Department is required.</small>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="firstName"><i class="fa-solid fa-signature"></i> First name</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="employee.firstName" required pattern="[a-zA-Z]*" minlength="3">
+                                <div *ngIf="updateEmployeeTfForm.controls['firstName']?.invalid && updateEmployeeTfForm.controls['firstName']?.touched">
+                                    <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['firstName']?.errors?.['required']">
+                                        First name is required.
+                                    </small>
+                                    <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['firstName']?.errors?.['pattern']">
+                                        Only letters are allowed.
+                                    </small>
+                                    <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['firstName']?.errors?.['minlength']">
+                                        First name must be at least 3 characters.
+                                    </small>
+                                </div>
+                                
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="lastName">Last name</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="employee.lastName" required pattern="[a-zA-Z]*" minlength="3">
+                                <div *ngIf="updateEmployeeTfForm.controls['lastName']?.invalid && updateEmployeeTfForm.controls['lastName']?.touched">
+                                    <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['lastName']?.errors?.['required']">
+                                        Last name is required.
+                                    </small>
+                                    <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['lastName']?.errors?.['pattern']">
+                                        Only letters are allowed.
+                                    </small>
+                                    <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['lastName']?.errors?.['minlength']">
+                                        Last name must be at least 3 characters.
+                                    </small>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+                        
+
+                        <div class="mb-3">
+                            <label class="form-label" for="email"><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" class="form-control" id="email" name="email" [(ngModel)]="employee.employeeEmail" required pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" email>
+                            <div *ngIf="updateEmployeeTfForm.controls['email']?.invalid && updateEmployeeTfForm.controls['email']?.touched">
+                                <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['email']?.errors?.['required']">Email is
+                                    required.</small>
+                                    <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['email']?.errors?.['pattern']">
+                                        Invalid email format.
+                                    </small>
+                                
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="date"><i class="far fa-calendar-alt"></i> Join Date</label>
+                                <input type="date" class="form-control" id="date" name="date" [(ngModel)]="employee.dateOfJoining" required [max]="maxDate()"[min]="minDate()">
+                                <div *ngIf="updateEmployeeTfForm.controls['date']?.invalid && updateEmployeeTfForm.controls['date']?.touched">
+                                    <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['date']?.errors?.['required']">Date is required.</small>
+                                    
+                                    <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['date']?.errors?.['futureDate']">Join date can't be a future date.</small>
+                                    <small class="text-danger" *ngIf=" updateEmployeeTfForm.controls['date']?.value<='2001-01-01'">Minimum date should be 2001-01-01 .</small>
+                                </div>
+                                
+                                
+                                
+                            </div>
+                            
+
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fas fa-venus-mars"></i> Gender</label>
+                                <div class="form-check">
+                                    <input type="radio" id="male" name="gender" value="M" [(ngModel)]="employee.gender" class="form-check-input" required>
+                                    <label class="form-check-label" for="male"><i class="fa fa-mars" ></i> Male</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="female" name="gender" value="F" [(ngModel)]="employee.gender" class="form-check-input" required>
+                                    <label class="form-check-label" for="female"><i class="fa fa-venus" ></i> Female</label>
+                                </div>
+                                <div *ngIf="updateEmployeeTfForm.controls['gender']?.invalid && updateEmployeeTfForm.controls['gender']?.touched">
+                                    <small class="text-danger">Gender is required.</small>
+                                </div>
+                            </div>
+                           
+                            
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="basicSalary"><i class="fas fa-money-bill-wave"></i> Basic Salary</label>
+                            <input type="number" class="form-control" id="basicSalary" name="basicSalary" [(ngModel)]="employee.basicSalary" required min="1000">
+                            <div *ngIf="updateEmployeeTfForm.controls['basicSalary']?.invalid && updateEmployeeTfForm.controls['basicSalary']?.touched">
+                                <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['basicSalary']?.errors?.['required']">
+                                    Basic Salary is required.
+                                </small>
+                                <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['basicSalary']?.errors?.['min']">
+                                    Minimum basic salary is 1000.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="allowance"><i class="fa-solid fa-award"></i> Allowance</label>
+                            <input type="number" class="form-control" id="allowance" name="allowance" [(ngModel)]="employee.allowance" required min="0">
+                            <div
+                                    *ngIf="updateEmployeeTfForm.controls['allowance']?.invalid && updateEmployeeTfForm.controls['allowance']?.touched">
+                                    <small class="text-danger"
+                                        *ngIf="updateEmployeeTfForm.controls['allowance']?.errors?.['required']">Allowance is
+                                        required.</small> 
+                                        <small class="text-danger" *ngIf="updateEmployeeTfForm.controls['allowance'].errors?.['min']">
+                                            Allowance must be greater than or equal to 0
+                                          </small> 
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-danger me-2" [routerLink]="['/employee']" routerLinkActive="router-link-active"><i class="fas fa-arrow-left"></i></button>
+                            <button type="submit" [disabled]="updateEmployeeTfForm.invalid" class="btn btn-primary btn-block me-3">Edit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

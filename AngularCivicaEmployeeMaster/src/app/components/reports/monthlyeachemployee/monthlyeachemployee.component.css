@@ -1,0 +1,154 @@
+.arrowup,
+.arrowdown {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.arrowup {
+    margin-bottom: 17px;
+}
+
+.arrowdown {
+    margin-left: -10px;
+    margin-top: 0px;
+}
+
+.btn-info.text-dark {
+    color: black;
+}
+
+/* Custom styles for the page size dropdown */
+#pageSize {
+    width: 80px;
+    display: inline-block;
+}
+
+/* Custom pagination styles */
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: black; /* Set the text color to black for active page link */
+}
+
+.pagination .page-item .page-link {
+    color: #17a2b8;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Additional margin for the page size label */
+label[for="pageSize"] {
+    margin-right: 10px;
+}
+
+.page-size-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Styling the label */
+.page-size-container label {
+    margin-right: 10px;
+    font-weight: bold;
+   
+    font-size: 1.1em;
+}
+
+/* Custom styles for the dropdown */
+#pageSize {
+    width: 100px;
+    padding: 5px 10px;
+    font-size: 1em;
+    border: 2px solid #17a2b8;
+    border-radius: 5px;
+    color: #17a2b8;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+#pageSize:hover {
+    border-color: #138496;
+    color: #138496;
+}
+
+
+
+/* Additional margin for the page size label */
+label[for="pageSize"] {
+    margin-right: 10px;
+}
+
+/* Positioning and styling the loader overlay */
+.loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top */
+}
+ 
+/* Centering the loader image */
+.loader-image {
+    width: 50px;
+    height: 50px;
+}
+
+.table {
+    border-collapse: separate;
+    border-spacing: 10px; /* Adjust the spacing as needed */
+}
+
+.table th,
+.table td {
+    padding: 10px; /* Add padding if needed for content */
+    text-align: center;
+}
+.custom-thead {
+    background-color: #00b4c1;
+}
+
+.form-label {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    .form-select {
+        width: 100%;
+        padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .form-select:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    .pagination {
+        margin: 1rem;
+    }
+  
+    .custom-heading {
+        font-size: 3rem; /* Adjust the size as needed */
+        font-weight: bold; /* Makes the text bold */
+        color: #000000; /* Custom color */
+        text-align: center; /* Center the text */
+        
+    }

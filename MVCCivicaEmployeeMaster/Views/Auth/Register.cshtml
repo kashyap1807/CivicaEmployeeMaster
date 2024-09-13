@@ -1,0 +1,124 @@
+﻿@using MVCCivicaEmployeeMaster.ViewModels
+@model RegisterViewModel
+
+<div class="container">
+    <h2 class="custom-heading text-center">SIGN UP</h2>
+    <br />
+    <div class="position-relative">
+        <div class="row justify-content-center">
+            <div class="col-md-6 mb-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form asp-action="Register" method="post">
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label asp-for="Salutation" class="form-label"><i class="fas fa-signature"></i> Salutation</label>
+                                    <select asp-for="Salutation" class="form-select custom-select">
+                                        <option value="">Select</option>
+                                        <option value="Mr." data-category="Salutation">Mr.</option>
+                                        <option value="Ms." data-category="Salutation">Ms.</option>
+                                        <option value="Miss." data-category="Salutation">Miss.</option>
+                                        <option value="Mrs." data-category="Salutation">Mrs.</option>
+                                    </select>
+                                    <span asp-validation-for="Salutation" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-9">
+                                    <label asp-for="Name" class="form-label"><i class="fas fa-user"></i> Name</label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label asp-for="LoginId" class="form-label"><i class="fa-solid fa-id-badge"></i> Login Id</label>
+                                    <input asp-for="LoginId" class="form-control" />
+                                    <span asp-validation-for="LoginId" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Email" class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label asp-for="Age" class="form-label"><i class="fas fa-birthday-cake"></i> Age</label>
+                                    <input asp-for="Age" class="form-control" />
+                                    <span asp-validation-for="Age" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="DateOfBirth" class="form-label"><i class="fas fa-calendar-alt"></i> Date of Birth</label>
+                                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label asp-for="Phone" class="form-label"><i class="fas fa-phone"></i> Contact</label>
+                                    <input asp-for="Phone" class="form-control" />
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label"><i class="fas fa-venus-mars"></i> Gender</label><br />
+                                    <div class="form-check-inline">
+                                        <input class="form-check-input" type="radio" asp-for="Gender" value="M" />
+                                        <label class="form-check-label">Male</label>
+                                    </div>
+                                    <div class="form-check-inline">
+                                        <input class="form-check-input" type="radio" asp-for="Gender" value="F" />
+                                        <label class="form-check-label">Female</label>
+                                    </div><br />
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label asp-for="Password" class="form-label"><i class="fa-solid fa-unlock"></i> Password</label>
+                                    <input asp-for="Password" class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="ConfirmPassword" class="form-label"><i class="fas fa-lock"></i> Confirm Password</label>
+                                    <input asp-for="ConfirmPassword" class="form-control" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label asp-for="PasswordHintId" class="form-label"><i class="fas fa-question-circle"></i> Password hint</label>
+                                    <select asp-for="PasswordHintId" class="form-select custom-select">
+                                        <option value=0>-----Select password hint-----</option>
+                                        <option value=1 data-category="PasswordHintId">What is your favourite colour?</option>
+                                        <option value=2 data-category="PasswordHintId">What is your birth city?</option>
+                                        <option value=3 data-category="PasswordHintId">What is your favourite holiday destination</option>
+                                    </select>
+                                    <span asp-validation-for="PasswordHintId" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="PasswordHintAnswer" class="form-label"><i class="fas fa-key"></i> Hint answer</label>
+                                    <input asp-for="PasswordHintAnswer" class="form-control" />
+                                    <span asp-validation-for="PasswordHintAnswer" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <a type="button" class="btn btn-outline-danger me-2" asp-action="Index" asp-controller="Home"><i class="fas fa-arrow-left"></i></a>
+                                <input type="submit" value="Submit" class="btn btn-primary btn-block me-2" style="background-color:#00b4c1" />
+                                <a type="button" class="btn btn-outline-success" asp-action="Login" asp-controller="Auth">SignIn</a>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

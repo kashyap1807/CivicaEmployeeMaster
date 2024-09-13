@@ -1,0 +1,41 @@
+<div class="container">
+    <div *ngIf="loading" class="loader-overlay">
+        <img src="assets/loaderImage.gif" class="loader-overlay" alt="loading" />
+    </div>
+    <h2 class="custom-heading text-center">SIGN IN</h2>
+    <br>
+    <div class="position-relative">
+        <div class="row justify-content-center">
+            <div class="col-md-6 mb-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <form (ngSubmit)="login()" #loginForm="ngForm">
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="username"><i class="fa fa-user"></i> Username</label>
+                                <input type="text" id="username" name="username" class="form-control" [(ngModel)]="username" required #usernameInput="ngModel">
+                                <div *ngIf="usernameInput.touched && usernameInput.errors?.['required']" class="text-danger">
+                                    Username is required.
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="password"><i class="fa fa-key"></i> Password</label>
+                                <input type="password" id="password" name="password" class="form-control" [(ngModel)]="password" required #passwordInput="ngModel">
+                                <div *ngIf="passwordInput.touched && passwordInput.errors?.['required']" class="text-danger">
+                                    Password is required.
+                                </div>
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary btn-block" [disabled]="!loginForm.valid">SIGN IN</button>
+                        </form>
+                        <br>
+                        <div class="d-flex justify-content-between">
+                            <p>Not a Member ?<a type="button" class="btn btn-link" [routerLink]="['/signup']" routerLinkActive="router-link-active"> Sign up</a></p>
+                            <a type="button" class="btn btn-link" [routerLink]="['/forgotpassword']" routerLinkActive="router-link-active">Forgot password?</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

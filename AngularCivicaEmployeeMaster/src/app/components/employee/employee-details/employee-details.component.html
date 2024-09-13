@@ -1,0 +1,39 @@
+<div class="container">
+    <br>
+    <h2 class="custom-heading">Employee Details</h2>
+    <br>
+
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card mb-3 shadow">
+                <div class="card-header">
+                    <h3 class="card-title font-weight-bold">&nbsp;<b>{{employee.firstName}}&nbsp;{{employee.lastName}}</b></h3>
+                </div>
+            </div>
+
+            <div class="card mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fas fa-building"></i> <b> Department Name : </b> {{employee.employeeDepartment.departmentName}}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fas fa-envelope"></i> <b> Employee Email : </b> {{employee.employeeEmail}}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fas fa-venus-mars"></i> <b> Gender : </b> {{employee.gender == 'M' ? 'Male' : 'Female'}}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="far fa-calendar-alt"></i> <b> Join Date : </b> {{employee.dateOfJoining | date:'MM-dd-yyyy'}}</h5>
+                    <!-- <h5 class="card-title" style="font-weight: lighter"><i class="fas fa-money-bill-wave"></i> <b> Basic Salary : </b> {{employee.basicSalary| currency:'INR':'symbol':'1.0-0' }}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fas fa-home"></i> <b> HRA : </b> {{employee.hra| currency:'INR':'symbol':'1.0-0' }}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fa-solid fa-award"></i> <b> Allowance : </b> {{employee.allowance| currency:'INR':'symbol':'1.0-0' }}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fas fa-hand-holding-usd"></i> <b> Gross Salary : </b> {{employee.grossSalary| currency:'INR':'symbol':'1.0-0' }}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fas fa-file-invoice-dollar"></i> <b> Pf Deduction : </b> {{employee.pfDeduction| currency:'INR':'symbol':'1.0-0' }}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fas fa-money-check-alt"></i> <b> Prof Tax : </b> {{employee.profTax| currency:'INR':'symbol':'1.0-0' }}</h5>
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fas fa-hand-holding-usd"></i> <b> Gross Deductions : </b> {{employee.grossDeductions| currency:'INR':'symbol':'1.0-0' }}</h5> -->
+                    <h5 class="card-title" style="font-weight: lighter"><i class="fas fa-money-check-alt"></i> <b> Total Salary : </b> {{employee.totalSalary| currency:'INR':'symbol':'1.0-0' }}</h5>
+                    </div>
+            </div>
+            <!-- <button class="btn btn-info btn-block" [routerLink]="['/eachemployeesalaryslip/'+employeeId]" routerLinkActive="router-link-active">
+                <i class="fas fa-month"></i> Monthly
+            </button>
+            <hr> -->
+            <button class="btn btn-outline-secondary btn-block" [routerLink]="['/employee']" routerLinkActive="router-link-active">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </button>
+        </div>
+    </div>
+</div>

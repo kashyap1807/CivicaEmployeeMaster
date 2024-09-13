@@ -1,0 +1,48 @@
+
+   <div class="container">
+    <div *ngIf="controllerDecider=='each'" class="card">
+      <div class="card-header">
+        <h1>Each Employee</h1>
+        <div class="button-group">
+          <button class="btn btn-primary" (click)="showComponent(1)">Salary Slip</button>
+          <button class="btn btn-primary" (click)="showComponent(2)">Professional Tax Deduction Report</button>
+        </div>
+      </div>
+      
+      <div >
+        <div *ngIf="selectedComponent == 1">
+          <app-monthlyeachemployee></app-monthlyeachemployee>
+        </div>
+        
+        <div *ngIf="selectedComponent == 2">
+          <app-taxdeductionemployeemonthlyreport></app-taxdeductionemployeemonthlyreport>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="controllerDecider=='all'" class="card">
+      <div class="card-header">
+        <h1>All Employee</h1>
+        <div class="button-group">
+          <button class="btn btn-primary" (click)="showComponent(1)">Monthly Salary Slip</button>
+          <button class="btn btn-primary" (click)="showComponent(2)">Yearly Salary Slip</button>
+          <button class="btn btn-primary" (click)="showComponent(3)">Professional Tax Deduction Report</button>
+        </div>
+      </div>
+      
+      <div >
+        <div *ngIf="selectedComponent == 1">
+          <app-monthlysalaryreport></app-monthlysalaryreport>
+        </div>
+        
+        <div *ngIf="selectedComponent == 2">
+          <app-yearlysalaryreport></app-yearlysalaryreport>
+        </div>
+        
+        <div *ngIf="selectedComponent == 3">
+          <app-taxdeductionmonthlyreport></app-taxdeductionmonthlyreport>
+        </div>
+      </div>
+    </div>
+  </div>
+  

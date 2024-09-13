@@ -1,0 +1,191 @@
+<div class="container">
+    <h2 class="custom-heading text-center">SIGN UP</h2>
+    <br>
+    <div *ngIf="loading" class="loader-overlay">
+      <img src="assets/loaderImage.gif" class="loader-overlay" alt="loading" />
+    </div>
+    <div class="position-relative">
+      <div class="row justify-content-center">   
+        <div class="col-md-6 mb-3">
+        <div class="card shadow">
+          <div class="card-body">
+            <form #signUpForm="ngForm" class="needs-validation" (ngSubmit)="onSubmit(signUpForm)" novalidate>
+              <div class="row mb-3">
+                <div class="col-md-3">
+                  <label class="form-label" for="salutation"><i class="fas fa-signature"></i> Salutation</label>
+                  <select id="salutation" name="salutation" class="form-select" [(ngModel)]="user.salutation" required>
+                      <option value="" disabled>Select</option>
+                      <option *ngFor="let salutation of userSalutation" [value]="salutation">{{salutation}}</option>
+     
+                  </select>  
+                  <div *ngIf="(signUpForm.controls['salutation']?.invalid || signUpForm.controls['salutation']?.value=='') && signUpForm.controls['salutation']?.touched">
+                      <small class="text-danger">Salutation is required.</small>
+                  </div>
+                </div>
+                <div class="col-md-9">
+                  <label class="form-label" for="name"><i class="fas fa-user"></i> Name</label>
+                <input type="text" class="form-control" id="name" name="name" [(ngModel)]="user.name" required pattern="^[a-zA-Z]+(?: [a-zA-Z]+)*$" minlength="5">
+                <div *ngIf="signUpForm.controls['name']?.invalid && signUpForm.controls['name']?.touched">
+                  <small class="text-danger" *ngIf="signUpForm.controls['name']?.errors?.['required']">Name is
+                    required.</small>
+                  <small class="text-danger" *ngIf="signUpForm.controls['name']?.errors?.['minlength']">Name must
+                    be at least 5 characters long.</small>
+                  <small class="text-danger" *ngIf="signUpForm.controls['name']?.errors?.['pattern']">Invalid
+                      name format.</small>
+                </div>
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="loginId"><i class="fa-solid fa-id-badge"></i> Login Id</label>
+                  <input type="text" class="form-control" id="loginId" name="loginId" [(ngModel)]="user.loginId" required pattern="^[a-zA-Z]+(?: [a-zA-Z]+)*$"
+                    minlength="2">
+                  <div *ngIf="signUpForm.controls['loginId']?.invalid && signUpForm.controls['loginId']?.touched">
+                    <small class="text-danger" *ngIf="signUpForm.controls['loginId']?.errors?.['required']">User name is
+                      required.</small>
+                    <small class="text-danger" *ngIf="signUpForm.controls['loginId']?.errors?.['minlength']">User name must be
+                      at least 2 characters long.</small>
+                      <small class="text-danger" *ngIf="signUpForm.controls['loginId']?.errors?.['pattern']">Invalid
+                        user name format.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="email"><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" required email>
+                <div *ngIf="signUpForm.controls['email']?.invalid && signUpForm.controls['email']?.touched">
+                  <small class="text-danger" *ngIf="signUpForm.controls['email']?.errors?.['required']">Email is
+                    required.</small>
+                  <small class="text-danger" *ngIf="signUpForm.controls['email']?.errors?.['email']">Invalid email
+                    format.</small>
+                  <small class="text-danger" *ngIf="signUpForm.controls['email']?.errors?.['pattern']">Invalid
+                    email format.</small>
+                </div>
+                </div>
+              </div>
+            
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="age"><i class="fas fa-birthday-cake"></i> Age</label>
+                  <input type="number" class="form-control" id="age" name="age" [min]="18" [max]="120"
+                    [(ngModel)]="user.age" pattern="^(1[8-9]|[2-9][0-9]|1[01][0-9]|120)$">
+                  <div *ngIf="signUpForm.controls['age']?.invalid && signUpForm.controls['age']?.touched">
+                    <!-- <small class="text-danger" *ngIf="signUpForm.controls['age']?.errors?.['required']">Age is required.</small> -->
+                    <small class="text-danger" *ngIf=" signUpForm.controls['age']?.value<='18'">Minimum age should be 18.</small>
+                    <small class="text-danger" *ngIf=" signUpForm.controls['age']?.value>='120'">Maximum age should be 18.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="dateOfBirth"><i class="fas fa-calendar-alt"></i> Date of Birth</label>
+                  <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" [(ngModel)]="user.dateOfBirth" [max]="maxDate()">
+                  <div *ngIf="signUpForm.controls['dateOfBirth']?.invalid && signUpForm.controls['dateOfBirth']?.touched">
+                      <small class="text-danger" *ngIf="signUpForm.controls['dateOfBirth']?.errors?.['required']">Date of Birth is required.</small>
+                  </div>
+                </div>
+                <div *ngIf="signUpForm.controls['age']?.value==null && signUpForm.controls['dateOfBirth']?.value=='' ">
+                  <small class="text-danger">Either Age or DateOfBirth is required.</small>
+                </div>
+              </div>
+
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="phone"><i class="fas fa-phone"></i> Contact Number</label>
+                  <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="user.phone" required [minlength]="10" [maxlength]="12" pattern="^\+?\d{10,13}$">
+                  <div *ngIf="signUpForm.controls['phone']?.invalid && signUpForm.controls['phone']?.touched">
+                  <small class="text-danger" *ngIf="signUpForm.controls['phone']?.errors?.['required']">Contact number is required.</small>
+                  <small class="text-danger" *ngIf="signUpForm.controls['phone']?.errors?.['minlength']">Contact number length should not be less than 10</small>
+                  <small class="text-danger" *ngIf="signUpForm.controls['phone']?.errors?.['maxlength']">Contact number length should not be more than 12</small>
+                  <small class="text-danger" *ngIf="signUpForm.controls['phone']?.errors?.['pattern']">Invalid
+                      contact number format.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label"><i class="fas fa-venus-mars"></i> Gender</label>
+                  <br>
+                  <div class="form-check-inline">
+                      <input type="radio" id="true" name="gender" value="m" [(ngModel)]="user.gender" required>
+                      <label  for="true"> Male</label>
+                  </div>
+                  <div class="form-check-inline">
+                      <input type="radio" id="false" name="gender" value="f" [(ngModel)]="user.gender" required>
+                      <label for="false">Female</label>
+                  </div>
+                  <div *ngIf="signUpForm.controls['gender']?.invalid && signUpForm.controls['gender']?.touched">
+                      <small class="text-danger">Gender is required.</small>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="password" class="form-label"><i class="fa-solid fa-unlock"></i> Password</label>
+                  <input type="password" id="password" name="password" class="form-control" [(ngModel)]="user.password"
+                    required minlength="8" pattern="^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&].{8,}$">
+                  <div *ngIf="signUpForm.controls['password']?.invalid && signUpForm.controls['password']?.touched">
+                    <small class="text-danger" *ngIf="signUpForm.controls['password']?.errors?.['required']">Password is
+                      required.</small>
+                    <small class="text-danger" *ngIf="signUpForm.controls['password']?.errors?.['minlength']">Password must be
+                      at least 8 characters long.</small>
+                    <small class="text-danger" *ngIf="signUpForm.controls['password']?.errors?.['pattern']">Password must be
+                      alphanumeric and contain at least one special character.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="confirmPassword" class="form-label"><i class="fas fa-lock"></i> Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+                  [(ngModel)]="user.confirmPassword" (input)="checkPasswords(signUpForm)" required>
+                <div
+                  *ngIf="signUpForm.controls['confirmPassword']?.invalid && signUpForm.controls['confirmPassword']?.touched">
+                  <small class="text-danger" *ngIf="signUpForm.controls['confirmPassword']?.errors?.['required']">Confirm
+                    password is required.</small>
+                  <small class="text-danger"
+                    *ngIf="signUpForm.controls['confirmPassword']?.errors?.['passwordMismatch']">Passwords do not
+                    match.</small>
+                </div>
+                </div>
+              </div>
+
+
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="salutation"><i class="fas fa-question-circle"></i> Password hint</label>
+                  <select id="passwordHintId" name="passwordHintId" class="form-select" [(ngModel)]="user.passwordHintId" required>
+                      <option value=0 disabled>-----Select password hint-----</option>
+                      <option value=1 >What is your favourite colour?</option>
+                      <option value=2 >What is your Birth City?</option>
+                      <option value=3 >What is your Favourite holiday destination?</option>
+                  </select>  
+                  <div *ngIf="(signUpForm.controls['passwordHintId']?.invalid || signUpForm.controls['passwordHintId']?.value==0) && signUpForm.controls['passwordHintId']?.touched">
+                      <small class="text-danger">Password hint is required.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="passwordHintAnswer"><i class="fas fa-key"></i> Hint answer</label>
+                  <input type="text" class="form-control" id="passwordHintAnswer" name="passwordHintAnswer" [(ngModel)]="user.passwordHintAnswer" required minlength="2">
+                  <div *ngIf="signUpForm.controls['passwordHintAnswer']?.invalid && signUpForm.controls['passwordHintAnswer']?.touched">
+                    <small class="text-danger" *ngIf="signUpForm.controls['passwordHintAnswer']?.errors?.['required']">Password hint answer is
+                      required.</small>
+                    <small class="text-danger" *ngIf="signUpForm.controls['passwordHintAnswer']?.errors?.['minlength']==1">Password hint answer must
+                      be at least 1 characters long.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-outline-danger me-2" [routerLink]="['/']" routerLinkActive="router-link-active"><i class="fas fa-arrow-left"></i></button>
+                <button type="submit" class="btn btn-primary btn-block me-2" [disabled]="signUpForm.invalid || user.passwordHintId==0 || (signUpForm.value.age==null && user.dateOfBirth=='')">SIGN UP</button>
+                <button type="button" class="btn btn-outline-success" [routerLink]="['/signin']" routerLinkActive="router-link-active">SignIn</button>
+              </div>
+            
+                 
+            </form>
+          </div>
+        </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>

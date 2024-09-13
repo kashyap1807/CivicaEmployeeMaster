@@ -1,0 +1,47 @@
+<div class="container">
+   <h2 class="custom-heading  text-center my-4">Monthly Prof. Deduction Report {{ monthNames[selectedMonth - 1] }} {{ selectedYear }}
+  </h2>
+  <!-- Year Dropdown -->
+  <div class="form-group rounded-corner">
+    <label for="yearDropdown"><b>Select Year:</b></label>
+    <select id="yearDropdown" class="form-control" [(ngModel)]="selectedYear" (change)="onYearSelected()">
+      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+    </select>
+    <div *ngIf="!selectedYear">
+      Please select a year to view monthly salary data.
+    </div>
+  </div>
+
+  <!-- Month Dropdown -->
+  <div class="form-group rounded-corner" *ngIf="selectedYear">
+    <label for="monthDropdown"><b>Select Month:</b></label>
+    <select id="monthDropdown" class="form-control" [(ngModel)]="selectedMonth" (change)="onMonthSelected()">
+      <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+    </select>
+    <div *ngIf="!selectedMonth">
+      Please select a month to view monthly salary data.
+    </div>
+  </div>
+
+
+
+  <div *ngIf="profTaxData && selectedYear && selectedMonth else noData" >
+    <h2><strong>Prof Tax:</strong> {{ profTaxData.profTax }}</h2>
+  </div>
+
+
+   <!-- No Data Template -->
+   <ng-template #noData>
+    <div class="rounded-corner no-data">
+      <p>No data available for the selected month and year.</p>
+    </div>
+  </ng-template>
+  <br>
+  <div class="row">
+
+  </div>
+  <button class="btn btn-secondary btn-block" [routerLink]="['/monthlyeachemployee']"
+  routerLinkActive="router-link-active">
+  <i class="fas fa-arrow-left"></i> Back to List
+</button>
+</div>

@@ -1,0 +1,29 @@
+﻿<div class="form-group">
+    @* Dropdown for selecting year *@
+    @Html.DropDownList("SelectedYear", ViewBag.YearsDropdown as List<SelectListItem>, "-- Select Year --", new { @class = "form-control", id = "yearDropdown" })
+</div>
+
+<div class="form-group">
+    @* Dropdown for selecting month *@
+    @Html.DropDownList("SelectedMonth", ViewBag.MonthsDropdown as List<SelectListItem>, "-- Select Month --", new { @class = "form-control", id = "monthDropdown" })
+</div>
+
+<h3 id="selectedYearMonth"></h3>
+
+@section Scripts {
+    <script>
+        // jQuery script to update selected year and month display
+        $(document).ready(function () {
+            $('#yearDropdown, #monthDropdown').change(function () {
+                var selectedYear = $('#yearDropdown').val();
+                var selectedMonth = $('#monthDropdown').val();
+
+                if (selectedYear && selectedMonth) {
+                    $('#selectedYearMonth').text('Selected Year and Month: ' + selectedYear + ' - ' + $('#monthDropdown option:selected').text());
+                } else {
+                    $('#selectedYearMonth').text('');
+                }
+            });
+        });
+    </script>
+}

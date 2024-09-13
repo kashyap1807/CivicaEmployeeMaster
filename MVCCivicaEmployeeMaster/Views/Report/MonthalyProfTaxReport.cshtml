@@ -1,0 +1,148 @@
+﻿@using MVCCivicaEmployeeMaster.ViewModel
+@using System.Globalization
+@model SalaryHeadTotal
+
+@{
+    ViewData["Title"] = "Monthaly ProfTax Report ";
+}
+<div class="card mb-3">
+    <div class="card-body">
+        <partial name="_AllEmployeesView" />
+        <div class="card mb-3" id="proftax">
+            <div class="card-body btn-light">
+                <h1 class="card-title text-center">Monthly ProfTax Report</h1>
+
+
+                @using (Html.BeginForm("MonthalyProfTaxReport", "Report", FormMethod.Post, new { id = "monthlyReportForm" }))
+                {
+                    <div class="form-group">
+                        @Html.Label("Select Year:")
+                        @{
+                            var currentYear = DateTime.Now.Year;
+                            var yearList = Enumerable.Range(2001, currentYear - 2000).Reverse()
+                            .Select(x => new SelectListItem
+                {
+                    Text = x.ToString(),
+                    Value = x.ToString()
+                });
+                            var selectListYear = new SelectList(yearList, "Value", "Text", null);
+                        }
+                        @Html.DropDownList("year", selectListYear, "Select Year", new { @class = "form-control", onchange = "showMonthDropdown()" })
+                    </div>
+
+                    <div class="form-group" id="monthDropdown" style="display: none;">
+                        @Html.Label("Select Month:")
+                        @{
+                            var monthList = Enumerable.Range(1, 12)
+                            .Select(x => new SelectListItem
+                {
+                    Text = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(x),
+                    Value = x.ToString()
+                });
+                            var selectListMonth = new SelectList(monthList, "Value", "Text", null);
+                        }
+                        @Html.DropDownList("month", selectListMonth, "Select Month", new { @class = "form-control", onchange = "submitForm()" })
+                        
+                    </div>
+
+
+                }
+                <div id="yearErrorMessage" style=" color: red;">*Please select a year.</div>
+                <div id="monthErrorMessage" style="color: red;">*Please select a month.</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3 text-start">
+                <a class="btn btn-secondary btn-block " asp-action="MonthlySalaryReport" asp-controller="Report">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model != null && Model.ProfTax != 0)
+{
+    <div class="card mb-3">
+        <div class="card-body">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Prof Tax</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                        <td>@Model.ProfTax</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+        function submitForm() {
+            var selectedMonth = $('#month').val();
+            if (selectedMonth !==''){
+                $('#monthErrorMessage').hide();
+                $('#monthlyReportForm').submit();
+            }else{
+                $('#monthErrorMessage').show();
+            }
+        };
+
+        function monthForError(){
+            var selectedMonth = $('#month').val();
+            if (selectedMonth !== '') {
+                $('#monthErrorMessage').hide();
+            } else {
+                $('#monthErrorMessage').show();
+            }
+        }
+
+        $(document).ready(function () {
+            // Function to show month dropdown if year is selected
+            function showMonthDropdown() {
+                var selectedYear = $('#year').val();
+                var selectedMonth = $('#month').val();
+                
+                if (selectedYear !== '') {
+                    $('#yearErrorMessage').hide();
+                    $('#monthDropdown').show();
+                } else {
+                    $('#yearErrorMessage').show();
+                    $('#monthDropdown').hide(); // Hide dropdown if no year is selected
+                }
+                if (selectedYear === '' && selectedMonth === '') {
+                    $('#monthErrorMessage').hide();
+                }
+                if (selectedYear !== '' && selectedMonth !== '') {
+                    $('#monthErrorMessage').hide();
+                }
+
+            }
+
+            // Initial check on page load
+            showMonthDropdown();
+
+            $('#year').change(function () {
+                showMonthDropdown();
+                monthForError();
+            });
+        });
+    </script>
+}
+

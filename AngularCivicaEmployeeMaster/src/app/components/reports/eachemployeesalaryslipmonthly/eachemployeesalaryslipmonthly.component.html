@@ -1,0 +1,113 @@
+<div class="container">
+  <h3 class="custom-heading  text-center my-4">{{employee.firstName}} Salary Slip {{selectedMonth}} {{selectedYear}}
+  </h3>
+  <!-- Year Dropdown -->
+  <div class="form-group rounded-corner">
+    <label for="yearSelect"><b>Select Year:</b></label>
+    <select id="yearSelect" class="form-control" [(ngModel)]="selectedYear" (change)="generateMonthlySalarySlip()">
+      <option *ngFor="let year of years" [ngValue]="year">{{ year }}</option>
+    </select>
+    <div *ngIf="!selectedYear">
+      Please select a year to view monthly salary data.
+    </div>
+  </div>
+ 
+  <!-- Month Dropdown -->
+  <div class="form-group rounded-corner" *ngIf="selectedYear">
+    <label for="monthSelect"><b>Select Month:</b></label>
+    <select id="monthSelect" class="form-control" [(ngModel)]="selectedMonth" (change)="generateMonthlySalarySlip()">
+      <option *ngFor="let month of months; let i = index" [ngValue]="i + 1">{{ month }}</option>
+    </select>
+    <div *ngIf="!selectedMonth">
+      Please select a month to view monthly salary data.
+    </div>
+  </div>
+  
+  <div class="rounded-corner salary-data" *ngIf="selectedYear && selectedMonth && !noRecordFound  else noData" id="salarySlipTable">
+
+    <div class="col-12">
+    </div>
+    <div class="row mb-3">
+      <div class="col-12 col-sm-6 col-md-8 center" >
+
+        <address *ngIf="employee">
+        <strong>   Name: {{ employee.firstName }} {{ employee.lastName }}</strong><br>
+         Email: {{ employee.employeeEmail }}<br>
+         Department:  {{ employee.employeeDepartment.departmentName }}
+        </address>
+        
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col" class="text-uppercase">Sr No.</th>
+            <th scope="col" class="text-uppercase">Salary Head</th>
+            <th scope="col" colspan="2" class="text-uppercase text-end">Amount</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          <tr>
+            <th scope="row">1</th>
+            <td>Basic Salary</td>
+            <td class="text-end" colspan="2">{{ employee.basicSalary }}</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>HRA</td>
+            <td class="text-end" colspan="2">{{ employee.hra }}</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Allowance</td>
+            <td class="text-end" colspan="2">{{ employee.allowance }}</td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>Gross Salary</td>
+            <td class="text-end" colspan="2">{{ employee.grossSalary }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-end">PF Deduction</td>
+            <td class="text-end">{{ employee.pfDeduction }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-end">Prof Tax</td>
+            <td class="text-end">{{ employee.profTax }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-end">Gross Deductions</td>
+            <td class="text-end">{{ employee.grossDeductions }}</td>
+          </tr>
+          <tr>
+            <th scope="row" colspan="3" class="text-uppercase text-end">Total Salary</th>
+            <td class="text-end">{{ employee.totalSalary }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <div class="col-12 text-end">
+          <button type="submit" class="btn btn-primary mb-3" (click)="downloadInvoice()">Download Salary Slip</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<br>
+
+
+<button class="btn btn-secondary btn-block" [routerLink]="['/monthlyeachemployee']"
+  routerLinkActive="router-link-active">
+  <i class="fas fa-arrow-left"></i> Back to List
+</button>
+</div>
+ <!-- No Data Template -->
+ <ng-template #noData>
+  <div class="rounded-corner no-data">
+    <p>No data available for the selected month and year.</p>
+  </div>
+</ng-template>
+<br>
+<div class="row">

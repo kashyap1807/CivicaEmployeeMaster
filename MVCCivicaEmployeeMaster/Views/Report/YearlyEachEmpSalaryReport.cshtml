@@ -1,0 +1,176 @@
+﻿@using MVCCivicaEmployeeMaster.ViewModel
+@model SalaryHeadTotal
+
+@{
+    ViewData["Title"] = "Yearly Salary Report";
+}
+<div class="card">
+    <div class="card-body">
+
+        <partial name="_EachEmployeeView" />
+        <h1 class="card-title text-center">Yearly Salary Report</h1>
+        <div class="card mb-3" id="yearly">
+            <div class="card-body" id="yearly">
+                @using (Html.BeginForm("YearlyEachEmpSalaryReport", "Report", FormMethod.Post, new { id = "yearlyReportForm" }))
+                {
+                    @Html.Hidden("id", null, new { id = "id" }) <!-- Hidden input field for Employee ID -->
+                    <div class="form-group">
+                        @* @Html.Label("Select Year:") *@
+                        <label style="font-weight: bold; background-color:white">Select Year:</label>
+                        @{
+                            var currentYear = DateTime.Now.Year;
+                            var yearList = Enumerable.Range(2001, currentYear - 2000).Reverse()
+                            .Select(x => new SelectListItem
+                {
+                    Text = x.ToString(),
+                    Value = x.ToString()
+                });
+                            var selectList = new SelectList(yearList, "Value", "Text", null);
+                        }
+                        @Html.DropDownList("year", selectList, "Select Year", new { @class = "form-control", onchange = "submitForm()" })
+
+                    </div>
+                }
+                <div id="yearErrorMessage" style="display: none; color: red;">*Please select a year.</div>
+            </div>
+        </div>
+
+        
+
+
+        @if (Model != null && Model.TotalSalary != 0)
+        {
+
+
+
+            <div class="rounded-corner salary-data" *ngIf="yearlyAggregatedSalaries; else noData">
+                <div class="card mb-3" id="salarySlipTable">
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <th scope="col" class="text-uppercase">Sr No.</th>
+                            <th scope="col" class="text-uppercase">Salary Head</th>
+                            <th scope="col" colspan="2" class="text-uppercase text-end">Amount</th>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Basic Salary</td>
+
+                                    <td class="text-end" colspan="2">@Model.BasicSalary</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>HRA</td>
+                                    <td class="text-end" colspan="2">@Model.HRA</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>Allowance</td>
+                                    <td class="text-end" colspan="2">@Model.Allowance</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">4</th>
+                                    <td>Gross Salary</td>
+                                    <td class="text-end" colspan="2">@Model.GrossSalary</td>
+
+                                </tr>
+
+                                <tr>
+                                    <td colspan="3" class="text-end">PF Deduction</td>
+                                    <td class="text-end">@Model.PfDeduction</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-end">Prof Tax</td>
+                                    <td class="text-end">@Model.ProfTax</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-end">Gross Deductions</td>
+                                    <td class="text-end">@Model.GrossDeductions</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colspan="3" class="text-uppercase text-end">Total Salary</th>
+                                    <td class="text-end">@Model.TotalSalary</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary mb-3" onclick="downloadSalarySlip()">Download Salary Slip</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3 text-start">
+                    <a class="btn btn-secondary btn-block " asp-action="EachEmployeeGrid" asp-controller="Report">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+        @section Scripts {
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+            <script type="text/javascript">
+
+                function submitForm() {
+                    var selectedYear = $('#year').val();
+                    if (selectedYear !== '') {
+                        $('#yearErrorMessage').hide();
+                        $('#yearlyReportForm').submit();
+
+                    }
+                    else {
+                        $('#yearErrorMessage').show();
+                    }
+                }
+
+
+                $(document).ready(function () {
+                    var selectedYear = $('#year').val();
+                    if (selectedYear !== '') {
+                        $('#yearErrorMessage').hide();
+                    }
+                    else {
+                        $('#yearErrorMessage').show();
+                    }
+                });
+                function downloadSalarySlip() {
+                    const element = document.getElementById('salarySlipTable');
+
+
+                    html2canvas(element, {
+                        onrendered: function (canvas) {
+                            const imgData = canvas.toDataURL('image/png');
+                            const pdf = new jsPDF();
+                            const imgProps = pdf.getImageProperties(imgData);
+                            const pdfWidth = pdf.internal.pageSize.getWidth();
+                            const pdfHeight = imgProps.height * pdfWidth / imgProps.width;
+                            pdf.addImage(imgData, 'PNG', 5, 10, pdfWidth - 20, pdfHeight);
+                            pdf.save('salary_slip.pdf');
+                        }
+                    });
+                }
+
+
+            </script>
+        }
+        <style>
+            #yearly {
+                background-color: white;
+            }
+        </style>

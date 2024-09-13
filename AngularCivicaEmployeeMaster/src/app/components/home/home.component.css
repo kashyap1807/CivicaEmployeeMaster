@@ -1,0 +1,59 @@
+/* Optional: Custom styles for your component */
+
+.main-content {
+    
+    color: #fff; /* Light text color on dark background */
+    padding: 60px 0; /* Vertical padding */
+  }
+  
+  .card {
+    background-color: #ffffff; /* White background for card */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+  }
+  
+  .card:hover {
+    transform: translateY(-5px); /* Lift card slightly on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Darker shadow on hover */
+  }
+  
+  .card-body {
+    text-align: center; /* Center align text */
+    padding: 40px; /* Padding inside card body */
+  }
+  
+  .display-4 {
+    font-size: 3rem; /* Larger font size for welcome heading */
+    color: #2c3e50; /* Dark teal color for heading */
+    margin-bottom: 20px; /* Spacing below heading */
+  }
+  
+  .lead {
+    font-size: 1.2rem; /* Larger font size for lead text */
+    color: #34495e; /* Dark gray text color */
+    margin-bottom: 30px; /* Spacing below lead text */
+  }
+  
+  .btn-primary {
+    background-color: #3498db; /* Teal button color */
+    border-color: #3498db;
+    padding: 12px 24px; /* Padding inside button */
+    font-size: 1.1rem; /* Font size of button text */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
+    text-transform: uppercase; /* Convert text to uppercase */
+  }
+  
+  .btn-primary:hover {
+    background-color: #2980b9; /* Darker teal shade on hover */
+    border-color: #2980b9;
+  }
+  
+  .btn-primary i {
+    margin-right: 10px; /* Spacing between icon and text */
+  }
+  
+  .text-primary {
+    color: #3498db; /* Teal color for primary text */
+  }
+  

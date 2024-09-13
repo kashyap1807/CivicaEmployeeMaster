@@ -1,0 +1,10 @@
+.custom-heading {
+    font-size: 3rem; /* Adjust the size as needed */
+    font-weight: bold; /* Makes the text bold */
+    color: #000000; /* Custom color */
+    text-align: center; /* Center the text */
+    
+}
+.btn-block {
+    width: 100%;
+}

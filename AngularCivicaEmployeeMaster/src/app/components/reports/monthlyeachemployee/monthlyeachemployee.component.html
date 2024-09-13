@@ -1,0 +1,120 @@
+
+<div *ngIf="loading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <img src="assets/loaderImage.gif" alt="Loading.." />
+</div>
+<h1 class="custom-heading  text-center my-4">Employees Salary Slip</h1>
+<br>
+<div class="container row mb-3">
+    <div class="col-md-11">
+        <input type="text" [(ngModel)]="search" class="form-control" (keyup)="onSearch()" placeholder="🔍 Search employee">
+        
+       
+        <!-- Validation message -->
+        <div *ngIf="search.length > 0 && search.length < minSearchLength" class="text-danger" >
+            
+           *Please enter more than three characters to search.
+        
+        </div>
+    </div>
+    <div class="col-md-1 text-center">
+        <div class="input-group-append">
+            <button class="btn btn-outline-dark" type="button" (click)="clearSearch()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <!-- <div class="col-md-1 text-center">
+        <a [routerLink]="['/employee/addemployee']" class="btn btn-outline-success" routerLinkActive="router-link-active"><i class="fa fa-user-plus"></i></a>
+    </div> -->
+    
+</div>
+<div *ngIf="!loading" class="container">
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+    
+                <th class="custom-thead">Employee Name
+                    <div class="fas fa-caret-up arrowup" (click)="sortAsc()"></div>
+                    <div class="fas fa-caret-down arrowdown" (click)="sortDesc()"></div>
+                </th>
+                <th class="custom-thead">Department</th>
+                
+                <th class="custom-thead">Salary Slip</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="employee && employee.length > 0 && totalItems != 0; else noEmployees">
+    
+            <tr *ngFor="let emp of employee" >
+                <td ><b>{{emp.firstName}} &nbsp; {{emp.lastName}}</b></td>
+                <td ><b>{{emp.employeeDepartment.departmentName}}</b></td>
+                <td>
+                    <button class="btn btn-outline-info me-2" [routerLink]="['/eachemployeesalaryslip/'+emp.id,{ firstname: emp.firstName, lastName: emp.lastName, email: emp.employeeEmail, department:emp.employeeDepartment}]" routerLinkActive="router-link-active">
+                        <i class='fas fa-calendar'></i> Monthly
+                    </button>
+                    <a class="btn btn-outline-warning me-2" [routerLink]="['/yearlyeachemployeesalary/',emp.id]"
+                        routerLinkActive="router-link-active"> <i class='fas fa-calendar'></i> Yearly</a>
+                 
+                </td>
+            </tr>
+    
+        </tbody>
+        <ng-template #noEmployees>
+            <tr *ngIf="!loading">
+                <td colspan="6" ><b>No employee found!</b></td>
+            </tr>
+        </ng-template>
+    </table>
+    
+    
+    <div class="row mb-3 align-items-center">
+        <div class="col-sm-3">
+            <!-- Page Size Dropdown -->
+        <div *ngIf="employee && employee.length > 0 && totalItems != 0" class="page-size-container">
+            <label for="pageSize">Page Size:</label>
+            <select id="pageSize" class="form-select" [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
+                <option [ngValue]="2">2</option>
+                <option [ngValue]="4">4</option>
+                <option [ngValue]="6">6</option>
+            </select>
+        </div>
+        </div>
+        <div class="col-sm-9 d-flex justify-content-end">
+            <!-- Pagination controls -->
+            <ul class="pagination " *ngIf="employee && employee.length > 0 && totalItems != 0">
+                <li class="page-item" [class.disabled]="pageNumber === 1">
+                    <a class="page-link" (click)="changePage(1)" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" [class.disabled]="pageNumber === 1">
+                    <a class="page-link" (click)="changePage(pageNumber - 1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li *ngFor="let i of [].constructor(totalPages); let index = index" class="page-item"
+                    [class.active]="pageNumber === index + 1">
+                    <a class="page-link" (click)="changePage(index + 1)">{{ index + 1 }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="pageNumber === totalPages">
+                    <a class="page-link" (click)="changePage(pageNumber + 1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" [class.disabled]="pageNumber === totalPages">
+                    <a class="page-link" (click)="changePage(totalPages)" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        
+    </div>
+    
+    
+    
+    
+</div>
+
+
